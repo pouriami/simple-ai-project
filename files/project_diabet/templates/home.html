@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <link rel="stylesheet" type="text/css" href="{% static 'home.css' %}">
+    <link rel="icon" type="image/x-icon" href="{% static 'images.png' %}">
+    <style>
+        @font-face {
+            font-family: 'MyFont';
+            src: url("{% static 'Vazir-Bold-FD-WOL.ttf' %}") format('truetype');
+        }
+
+        body {
+            font-family: 'MyFont', sans-serif;
+            background-image: url('{% static '12109.jpg' %}') !important;
+        }
+
+        .error {
+            color: red;
+            font-size: 0.9em;
+        }
+    </style>
+    <meta charset="UTF-8">
+    <title>تشخیص دیابت</title>
+</head>
+<body>
+    <div class="box">
+        {% if error %}
+            <div class="error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="{% url 'res' %}" onsubmit="return validateForm()">
+            {% csrf_token %}
+            <span class="text-center">لطفا سوالات زیر را پاسخ دهید</span>
+
+            <div class="input-container">
+                <input type="number" id="weight" name="weight" step="0.1" required min="1" max="300">
+                <label for="weight">وزن (کیلوگرم)</label>
+                <span class="error" id="weightError"></span>
+            </div><br>
+
+            <div class="input-container">
+                <input type="number" id="height" name="height" required min="1" max="250">
+                <label for="height">قد (سانتی‌متر)</label>
+                <span class="error" id="heightError"></span>
+            </div><br>
+
+            <div class="input-container">
+                <input type="number" id="age" name="age" required min="1" max="120">
+                <label for="age">سن</label>
+                <span class="error" id="ageError"></span>
+            </div><br>
+
+            <div class="input-container">
+                <input type="number" id="a1c_level" name="a1c_level" step="0.1" required min="0" max="20">
+                <label for="a1c_level">سطح هموگلوبین A1c (بر حسب درصد)</label>
+                <span class="error" id="a1cError"></span>
+            </div><br>
+
+            <div class="input-container">
+                <input type="number" id="blood_sugar" name="blood_sugar" step="0.1" required min="0" max="1000">
+                <label for="blood_sugar">سطح قند خون (بر حسب میلی گرم در دسی لیتر)</label>
+                <span class="error" id="bloodSugarError"></span>
+            </div><br>
+
+            <label for="gender" class="lase">جنسیت</label>
+            <select id="gender" name="gender">
+                <option value="0">زن</option>
+                <option value="1">مرد</option>
+            </select><br><br>
+
+            <label for="blood_pressure" class="lase">آیا شما سابقه فشار خون دارید؟</label>
+            <select id="blood_pressure" name="blood_pressure">
+                <option value="0">خیر</option>
+                <option value="1">بله</option>
+            </select><br><br>
+
+            <label for="heart_disease" class="lase">آیا شما سابقه بیماری قلبی دارید؟</label>
+            <select id="heart_disease" name="heart_disease">
+                <option value="0">خیر</option>
+                <option value="1">بله</option>
+            </select><br><br>
+
+            <label for="smoking" class="lase">آیا شما سیگار می‌کشید یا سابقه سیگار کشیدن دارید؟</label>
+            <select id="smoking" name="smoking">
+                <option value="0">هرگز سیگار نکشیده‌ام</option>
+                <option value="1">در گذشته سیگار می‌کشیدم و اکنون ترک کرده‌ام</option>
+                <option value="2">گاهی اوقات سیگار می‌کشم</option>
+                <option value="3">به طور منظم سیگار می‌کشم</option>
+            </select><br><br><br><br><br><br>
+
+            <button type="submit" class="btn">محاسبه</button>
+        </form>
+    </div>
+
+    <script>
+        function validateForm() {
+            let isValid = true;
+
+            const weight = document.getElementById('weight').value;
+            const height = document.getElementById('height').value;
+            const age = document.getElementById('age').value;
+            const a1c_level = document.getElementById('a1c_level').value;
+            const blood_sugar = document.getElementById('blood_sugar').value;
+
+            document.getElementById('weightError').textContent = '';
+            document.getElementById('heightError').textContent = '';
+            document.getElementById('ageError').textContent = '';
+            document.getElementById('a1cError').textContent = '';
+            document.getElementById('bloodSugarError').textContent = '';
+
+            if (weight <= 0 || weight > 300) {
+                document.getElementById('weightError').textContent = 'وزن باید بین ۱ تا ۳۰۰ کیلوگرم باشد.';
+                isValid = false;
+            }
+            if (height <= 0 || height > 250) {
+                document.getElementById('heightError').textContent = 'قد باید بین ۱ تا ۲۵۰ سانتی‌متر باشد.';
+                isValid = false;
+            }
+            if (age <= 0 || age > 120) {
+                document.getElementById('ageError').textContent = 'سن باید بین ۱ تا ۱۲۰ سال باشد.';
+                isValid = false;
+            }
+            if (a1c_level < 0 || a1c_level > 20) {
+                document.getElementById('a1cError').textContent = 'سطح هموگلوبین A1c باید بین ۰ تا ۲۰ درصد باشد.';
+                isValid = false;
+            }
+            if (blood_sugar < 0 || blood_sugar > 1000) {
+                document.getElementById('bloodSugarError').textContent = 'سطح قند خون باید بین ۰ تا ۱۰۰۰ میلی‌گرم در دسی‌لیتر باشد.';
+                isValid = false;
+            }
+
+            return isValid;
+        }
+    </script>
+</body>
+</html>

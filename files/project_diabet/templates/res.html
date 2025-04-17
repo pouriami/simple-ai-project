@@ -1,0 +1,38 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="fa">
+<head>
+    <meta charset="UTF-8">
+    <title>result</title>
+    <link rel="icon" type="image/x-icon" href="{% static 'images.png' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'result.css' %}">
+    <style>
+        @font-face {
+            font-family: 'MyFont';
+            src: url("{% static 'Vazir-Bold-FD-WOL.ttf' %}") format('truetype');
+        }
+
+        body {
+            font-family: 'MyFont', sans-serif;
+            background-image: url('{% static '12109.jpg' %}') !important;
+        }
+
+        option {
+            font-family: 'MyFont', sans-serif;
+        }
+    </style>
+
+    
+</head>
+<body>
+<div class="box">
+ {% if ans == 0 %}
+     <p >خوشبختانه شما به احتمال زیاد <span class="green">دیابت ندارید</span></p>
+ {% elif ans == 1 %}
+     <p >متاسفانه شما به احتمال زیاد <span class="red">دیابت دارید</span></p>
+{% else %}
+    <p>مقادیر را وارد نکرید</p>
+{% endif %}
+<a class = 'btn'type="button" href="{% url 'home' %}">برگشت به صفحه اصلی</a></div>
+</body>
+</html>

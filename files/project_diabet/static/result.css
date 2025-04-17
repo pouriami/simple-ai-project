@@ -1,0 +1,142 @@
+{% load static %}
+
+/* اضافه‌کردن فونت ایران‌سنس */
+@font-face {
+    font-family: 'IranSans';
+    src: url('{% static "fonts/IranSans.woff2" %}') format('woff2'),
+         url('{% static "fonts/IranSans.woff" %}') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* تعریف متغیرهای اصلی */
+:root {
+    --primary-color: #000000;
+    --secondary-color: #000000;
+    --tertiary-color: #000000;
+    --gradient-start: #ebf3ff;
+    --gradient-second: #cce6ff;
+    --gradient-third: #d7edff;
+    --gradient-fourth: #000000;
+    --text-color: #3E2723;
+    --body-text: #3E2723;
+    --box-bg: rgba(15, 15, 15, 0.25);
+    --box-border: rgba(20, 20, 20, 0.3);
+    --noise-opacity-bg: 0.08;
+    --noise-opacity-box: 0.15;
+    --transition-speed: 0.3s;
+    --animation-duration: 60s;
+    --easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* تنظیمات پایه صفحه */
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'IranSans', sans-serif;
+    direction: rtl; /* راست‌چین */
+    color: var(--body-text);
+}
+
+/* پس‌زمینه: گرادیان متحرک به همراه افکت نویز */
+html, body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, var(--gradient-start), var(--gradient-second), var(--gradient-third), var(--gradient-fourth));
+    background-size: 400% 400%;
+    animation: gradientBG var(--animation-duration) ease infinite;
+}
+
+html::before,
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 150%;
+    background: url('{% static "images/noise.png" %}') repeat; /* تصویر نویز دلخواه */
+    opacity: var(--noise-opacity-bg);
+    z-index: -1;
+}
+
+/* استایل جعبه اصلی با افکت گلس‌مورفیسم */
+.box {
+    position: relative;
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    border-radius: 50px;
+    padding: 70px 100px;
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.106);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    animation: fadeIn 1s var(--easing) both;
+    text-align: center;
+}
+
+/* افزودن لایه نویز به جعبه */
+.box::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: url('{% static "images/noise.png" %}') repeat;
+    opacity: var(--noise-opacity-box);
+    pointer-events: none;
+}
+
+/* استایل دکمه مشابه با UI قبلی */
+.btn {
+    display: inline-block;
+    margin: 30px auto 0;
+    padding: 10px 20px;
+    color: #fff;
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    border: none;
+    border-radius: 50px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform var(--transition-speed) var(--easing), box-shadow var(--transition-speed) var(--easing);
+}
+
+.btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(66, 165, 245, 0.6);
+}
+
+/* استایل متن‌ها */
+p {
+    font-size: 30px;
+    color: var(--text-color);
+}
+
+.red {
+    color: red;
+}
+
+.green {
+    color: #41e241;
+}
+
+/* انیمیشن‌های مورد استفاده */
+@keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

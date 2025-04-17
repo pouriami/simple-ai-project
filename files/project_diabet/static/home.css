@@ -1,0 +1,330 @@
+/* تعریف متغیرهای اصلی رنگ، شفافیت و تایمینگ */
+:root {
+    --primary-color: #000000;
+    --secondary-color: #000000;
+    --tertiary-color: #000000;
+    --gradient-start: #ebf3ff;
+    --gradient-second: #cce6ff;
+    --gradient-third: #d7edff;
+    --gradient-fourth: #000000;
+    --text-color: #3E2723; /* تغییر به رنگ مسکی */
+    --body-text: #3E2723;  /* تغییر به رنگ مسکی */
+    --box-bg: rgba(15, 15, 15, 0.25);
+    --box-border: rgba(20, 20, 20, 0.3);
+    --noise-opacity-bg: 0.08;
+    --noise-opacity-box: 0.15;
+    --transition-speed: 0.3s;
+    --animation-duration: 120s;
+    --easing: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* فونت ایران‌سنس */
+@font-face {
+    font-family: 'IranSans';
+    src: url('fonts/IranSans.woff2') format('woff2'),
+         url('fonts/IranSans.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+/* تنظیمات پایه جهت راست به چپ و فونت پیش‌فرض */
+body, input, select, textarea {
+    font-family: 'IranSans', sans-serif;
+    direction: rtl;
+    unicode-bidi: bidi-override;
+}
+
+/* تنظیم رنگ پیش‌فرض متن‌ها */
+body {
+    color: var(--body-text);
+    margin: 0;
+    padding: 0;
+}
+
+/* پس‌زمینه: گرادیان متحرک به همراه لایه نویز */
+html, body {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(-45deg, var(--gradient-start), var(--gradient-second), var(--gradient-third), var(--gradient-fourth));
+    background-size: 400% 400%;
+    animation: gradientBG var(--animation-duration) ease infinite;
+    overflow: hidden;
+    z-index: 0;
+}
+
+/* افزودن لایه نویز به پس‌زمینه */
+html::before,
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 150%;
+    height: 150%;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX///+nxBvIAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=') repeat;
+    opacity: var(--noise-opacity-bg);
+    z-index: -1;
+    pointer-events: none;
+}
+
+/* انیمیشن حرکت گرادیان پس‌زمینه */
+/* @keyframes gradientBG {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+} */
+
+/* اسکرول موبایل */
+@media (max-width: 991px) {
+  html, body {
+    overflow: auto;
+  }
+}
+
+/* استایل اسکرول بار مینیمال */
+::-webkit-scrollbar {
+    width: 6px;
+    background: transparent;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+::-webkit-scrollbar-thumb {
+    background: transparent;
+    border-radius: 8px;
+    border: 1px solid transparent;
+}
+
+/* عنوان فرم با انیمیشن ورود از بالا */
+.text-center {
+    color: var(--text-color);
+    text-transform: uppercase;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 30px;
+    position: relative;
+    z-index: 2;
+    animation: fadeInDown 1s var(--easing) both;
+}
+
+/* کادر اصلی با افکت گلس‌مورفیسم و لایه نویز */
+.box {
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    padding: 40px 30px;
+    border-radius: 20px;
+    background: var(--box-bg);
+    border: 1px solid var(--box-border);
+    box-shadow: 0 8px 32px rgba(255, 255, 255, 0.106);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    animation: fadeIn 1s var(--easing) both;
+    max-height: 90vh;
+    overflow-y: auto;
+    transition: backdrop-filter var(--transition-speed) var(--easing), transform var(--transition-speed) var(--easing);
+    z-index: 2;
+}
+.box:hover {
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    transform: scale(1.03);
+    animation: boxShadowPulse 2s ease-in-out infinite;
+}
+
+/* انیمیشن پالس سایه کادر */
+@keyframes boxShadowPulse {
+    0% {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+    50% {
+        box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+    }
+    100% {
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    }
+}
+
+/* افزودن لایه نویز به کادر گلس‌مورفیسم */
+.box::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: inherit;
+    background: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABAQMAAAAl21bKAAAAA1BMVEX///+nxBvIAAAAAXRSTlMAQObYZgAAAApJREFUCNdjYAAAAAIAAeIhvDMAAAAASUVORK5CYII=') repeat;
+    opacity: var(--noise-opacity-box);
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* گرد کردن گوشه المان‌ها */
+input, select, textarea, ul, ol {
+    border-radius: 20px;
+}
+
+/* استایل لیست‌ها با افکت هاور */
+ul, ol {
+    list-style: none;
+    padding: 10px;
+    margin: 10px 0;
+    background: rgb(36, 36, 36);
+    transition: transform var(--transition-speed) var(--easing), backdrop-filter var(--transition-speed) var(--easing);
+}
+ul:hover, ol:hover {
+    backdrop-filter: blur(3px);
+    transform: scale(1.01);
+}
+
+/* کانتینر فیلدها با انیمیشن ورود از پایین */
+.input-container {
+    position: relative;
+    margin-bottom: 25px;
+    animation: fadeInUp 1s var(--easing) both;
+    z-index: 2;
+}
+
+/* استایل لیبل‌های فیلدها */
+.input-container label {
+    position: absolute;
+    top: 12px;
+    right: 10px;
+    font-size: 16px;
+    color: var(--text-color);
+    pointer-events: none;
+    transition: all var(--transition-speed) var(--easing);
+}
+
+/* استایل فیلدهای ورودی */
+.input-container input {
+    width: 100%;
+    padding: 12px 10px;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid rgba(14, 14, 14, 0.6);
+    color: var(--text-color);
+    font-size: 16px;
+    transition: border-color var(--transition-speed) var(--easing), box-shadow var(--transition-speed) var(--easing);
+}
+
+/* افکت فوکوس روی فیلدها به همراه پالس */
+.input-container input:focus {
+    outline: none;
+    border-bottom: 1px solid var(--primary-color);
+    box-shadow: 0 0 8px rgba(216, 237, 255, 0.8);
+    animation: pulse 1s infinite;
+}
+
+/* جابه‌جایی لیبل در زمان فوکوس یا داشتن مقدار */
+.input-container input:focus ~ label,
+.input-container input:not(:placeholder-shown) ~ label {
+    top: -10px;
+    right: 0;
+    font-size: 12px;
+    color: var(--primary-color);
+}
+
+/* لیبل انتخابگر (Select) */
+.lase {
+    color: var(--text-color);
+    font-size: 16px;
+    display: block;
+    margin: 15px 0 5px;
+}
+
+/* استایل منوی کشویی */
+select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid rgb(16, 16, 16);
+    background: rgb(0, 0, 0);
+    color: var(--text-color);
+    font-size: 16px;
+    outline: none;
+    transition: background var(--transition-speed) var(--easing), border var(--transition-speed) var(--easing), box-shadow var(--transition-speed) var(--easing);
+}
+select:hover,
+select:focus {
+    background: rgb(28, 28, 28);
+    border: 1px solid var(--primary-color);
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+/* دکمه ارسال */
+.btn {
+    width: 100%;
+    padding: 12px;
+    margin-top: 30px;
+    color: var(--text-color);
+    background: linear-gradient(45deg, var(--secondary-color), var(--primary-color));
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    text-transform: uppercase;
+    transition: transform var(--transition-speed) var(--easing), box-shadow var(--transition-speed) var(--easing), background var(--transition-speed) var(--easing);
+    position: relative;
+    z-index: 2;
+}
+.btn:hover {
+    background: linear-gradient(45deg, var(--primary-color), var(--tertiary-color));
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(66, 165, 245, 0.6);
+}
+
+/* انیمیشن‌های ورود */
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeInDown {
+    0% {
+        opacity: 0;
+        transform: translateY(-30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* انیمیشن پالس */
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.6);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(66, 165, 245, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(66, 165, 245, 0);
+    }
+}
+
+/* جهت ورودی اعداد به صورت طبیعی */
+input.numeric {
+    direction: ltr;
+    unicode-bidi: embed;
+}
